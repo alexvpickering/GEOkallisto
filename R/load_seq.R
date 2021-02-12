@@ -68,7 +68,7 @@ load_seq <- function(data_dir, species = "Homo sapiens", release = "94",
     q <- import_quants(data_dir, species = species, release = release)
 
     # construct eset
-    annot <- drugseqr.data::get_ensdb_package(species, release)
+    annot <- dseqr::get_ensdb_package(species, release)
     fdata <- setup_fdata(species, release)
     eset <- construct_eset(q$quants, fdata, annot, q$txi.deseq)
 
@@ -130,7 +130,7 @@ load_archs4_seq <- function(archs4_file, gsm_names, species = "Homo sapiens",
 
     quants <- edgeR::calcNormFactors(edgeR::DGEList(counts))
     fdata <- setup_fdata(species, release)
-    annot <- drugseqr.data::get_ensdb_package(species, release)
+    annot <- dseqr::get_ensdb_package(species, release)
     eset <- construct_eset(quants, fdata, annot)
 
     if (!is.null(eset_path)) saveRDS(eset, eset_path)
@@ -155,7 +155,7 @@ load_archs4_seq <- function(archs4_file, gsm_names, species = "Homo sapiens",
 #' quants <- edgeR::DGEList(counts = y)
 #'
 #' fdata <- data.table::data.table(gene_name = row.names(y), key = "gene_name")
-#' annot <- drugseqr.data::get_ensdb_package("Homo sapiens", "94")
+#' annot <- dseqr::get_ensdb_package("Homo sapiens", "94")
 #'
 #' eset <- construct_eset(quants, fdata, annot)
 #' eset$group <- factor(c("t", "t", "c", "c"))
@@ -197,7 +197,7 @@ get_vsd <- function(eset, rlog_cutoff = 50) {
 #' @param fdata \code{data.table} returned from \code{\link{setup_fdata}}.
 #' @param annot Character vector with ensembldb package name. e.g.
 #'   \code{'EnsDb.Hsapiens.v94'}. Returned from
-#'   \code{\link[drugseqr.data]{get_ensdb_package}}.
+#'   \code{\link[dseqr]{get_ensdb_package}}.
 #' @param txi.deseq Optional \code{DGElist} returned by \code{import_quants}. If
 #'   specified, assays 'counts', 'abundance', and 'length' will be present in
 #'   the returned \code{ExpressionSet}.
@@ -214,7 +214,7 @@ get_vsd <- function(eset, rlog_cutoff = 50) {
 #' quants <- edgeR::DGEList(counts = y)
 #'
 #' fdata <- data.table::data.table(gene_name = row.names(y), key = "gene_name")
-#' annot <- drugseqr.data::get_ensdb_package("Homo sapiens", "94")
+#' annot <- dseqr::get_ensdb_package("Homo sapiens", "94")
 #'
 #' eset <- construct_eset(quants, fdata, annot)
 construct_eset <- function(quants, fdata, annot, txi.deseq = NULL) {
@@ -301,7 +301,7 @@ setup_fdata <- function(species = "Homo sapiens", release = "94") {
     SYMBOL <- ENTREZID <- gene_name <- .I <- NULL
 
     is.hs <- grepl("sapiens", species)
-    tx2gene <- drugseqr.data::load_tx2gene(species, release)
+    tx2gene <- dseqr::load_tx2gene(species, release)
 
     # unlist entrezids
     fdata <- data.table::data.table(tx2gene)
@@ -312,7 +312,7 @@ setup_fdata <- function(species = "Homo sapiens", release = "94") {
     # add homologene
     homologene <- readRDS(system.file("extdata",
         "homologene.rds",
-        package = "drugseqr.data"
+        package = "dseqr"
     ))
 
     fdata <- merge(unique(fdata), homologene,
@@ -328,7 +328,7 @@ setup_fdata <- function(species = "Homo sapiens", release = "94") {
     } else {
         hs <- readRDS(system.file("extdata",
             "hs.rds",
-            package = "drugseqr.data"
+            package = "dseqr"
         ))
 
         # where no homology, use original entrez id (useful if human platform):
@@ -396,7 +396,7 @@ setup_fdata <- function(species = "Homo sapiens", release = "94") {
 #' file.copy(example, qdir, recursive = TRUE)
 #' quants <- import_quants(data_dir)
 import_quants <- function(data_dir, species = "Homo sapiens", release = "94") {
-    tx2gene <- drugseqr.data::load_tx2gene(species, release)
+    tx2gene <- dseqr::load_tx2gene(species, release)
 
     # don't ignoreTxVersion if dots in tx2gene
     ignore <- TRUE

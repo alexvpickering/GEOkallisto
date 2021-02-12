@@ -14,7 +14,7 @@ kallisto indices.}
 
 \item{release}{ensembl release. Default is \code{94} (latest in release for
 AnnotationHub - needs to match with
-\code{\link[drugseqr.data]{build_ensdb}}).}
+\code{\link[dseqr.data]{build_ensdb}}).}
 }
 \value{
 Called for side effects. Saves `kallisto` index.

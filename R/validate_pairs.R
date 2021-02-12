@@ -89,7 +89,7 @@ get_fastq_id1s <- function(fastq_paths) {
 
 #' Validate sample pairing for pair-ended RNA seq
 #'
-#' Used internally by \link{select_pairs} and externally by drugseqr
+#' Used internally by \link{select_pairs} and externally by dseqr
 #'
 #' @param pairs Numeric vector of integers and/or \code{NA}. Positions with
 #'   the same integer value indicate samples that are paired in a pair-ended
@@ -136,7 +136,7 @@ validate_pairs <- function(pairs, rows, reps) {
 
 #' Validate sample replicates for RNA seq
 #'
-#' Used internally by select_pairs and externally by drugseqr
+#' Used internally by select_pairs and externally by dseqr
 #'
 #' @inheritParams validate_pairs
 #'

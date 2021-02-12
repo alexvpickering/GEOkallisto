@@ -20,7 +20,7 @@ same integer value indicate samples that replicates.}
 \code{TRUE} if the pairing is valid, otherwise \code{FALSE}.
 }
 \description{
-Used internally by \link{select_pairs} and externally by drugseqr
+Used internally by \link{select_pairs} and externally by dseqr
 }
 \examples{
 # example if valid pairing

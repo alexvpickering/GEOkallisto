@@ -46,7 +46,7 @@ single-end reads). Default (\code{NULL}) uses 200.}
 \item{fl.sd}{Estimated standard deviation of fragment length
 (only relevant for single-end reads). Default (\code{NULL}) uses 20.}
 
-\item{updateProgress}{Used by drugseqr app to provide visual update of
+\item{updateProgress}{Used by dseqr app to provide visual update of
 progress.}
 }
 \value{

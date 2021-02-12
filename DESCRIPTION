@@ -1,7 +1,7 @@
 Package: rkal
 Type: Package
 Title: Run, Import, and Export 'kallisto' Quantifications
-Version: 0.99.0
+Version: 0.99.1
 Authors@R: person("Alex", "Pickering", email="alexvpickering@gmail.com",
                 role=c("cre", "aut"),
                 comment = c(ORCID = "0000-0002-0002-6759"))
@@ -30,7 +30,7 @@ Imports:
     DESeq2,
     data.table,
     rhdf5,
-    drugseqr.data
+    dseqr.data
 biocViews:
     RNASeq,
     DataImport,

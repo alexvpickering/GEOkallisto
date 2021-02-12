@@ -40,7 +40,7 @@ argument specification for fastq files downloaded with [GEOfastq](https://github
 counts can be imported into R into a data structure that is compatible with
 [crossmeta](https://github.com/alexvpickering/crossmeta) (for differential
 expression and meta analyses) and 
-[drugseqr](https://github.com/hms-dbmi/drugseqr) (a GUI for bulk and single-cell
+[dseqr](https://github.com/hms-dbmi/dseqr) (a GUI for bulk and single-cell
 exploratory analyses as well as connectivity mapping).
 Alternatively, counts can be imported for GEO samples pre-aligned as part of the
 [ARCHS4](https://maayanlab.cloud/archs4/download.html) project.
@@ -87,7 +87,7 @@ We are now ready to run pseudoalignment:
 # exclude quant_meta for personal fastqs (will invoke GUI)
 res <- run_kallisto_bulk(indices_dir, data_dir, quant_meta)
 ```
-If you plan to use crossmeta or drugseqr, you can easily generate a suitably
+If you plan to use `crossmeta` or `dseqr`, you can easily generate a suitably
 annotated ExpressionSet:
 
 ```{r}

@@ -20,7 +20,7 @@ same integer value indicate samples that replicates.}
 \code{TRUE} if the replicate is valid, otherwise \code{FALSE}.
 }
 \description{
-Used internally by select_pairs and externally by drugseqr
+Used internally by select_pairs and externally by dseqr
 }
 \examples{
 # example if valid replicate specification

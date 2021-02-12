@@ -13,7 +13,7 @@ construct_eset(quants, fdata, annot, txi.deseq = NULL)
 
 \item{annot}{Character vector with ensembldb package name. e.g.
 \code{'EnsDb.Hsapiens.v94'}. Returned from
-\code{\link[drugseqr.data]{get_ensdb_package}}.}
+\code{\link[dseqr]{get_ensdb_package}}.}
 
 \item{txi.deseq}{Optional \code{DGElist} returned by \code{import_quants}. If
 specified, assays 'counts', 'abundance', and 'length' will be present in
@@ -35,7 +35,7 @@ row.names(y) <- paste0("gene", 1:2500)
 quants <- edgeR::DGEList(counts = y)
 
 fdata <- data.table::data.table(gene_name = row.names(y), key = "gene_name")
-annot <- drugseqr.data::get_ensdb_package("Homo sapiens", "94")
+annot <- dseqr::get_ensdb_package("Homo sapiens", "94")
 
 eset <- construct_eset(quants, fdata, annot)
 }

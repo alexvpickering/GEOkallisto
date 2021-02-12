@@ -21,7 +21,7 @@
 #'   single-end reads). Default (\code{NULL}) uses 200.
 #' @param fl.sd Estimated standard deviation of fragment length
 #'   (only relevant for single-end reads). Default (\code{NULL}) uses 20.
-#' @param updateProgress Used by drugseqr app to provide visual update of
+#' @param updateProgress Used by dseqr app to provide visual update of
 #'   progress.
 #'
 #' @return Called for side effects. Saves result of `kallisto` quantification.
