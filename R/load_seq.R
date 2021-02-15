@@ -301,7 +301,7 @@ setup_fdata <- function(species = "Homo sapiens", release = "94") {
     SYMBOL <- ENTREZID <- gene_name <- .I <- NULL
 
     is.hs <- grepl("sapiens", species)
-    tx2gene <- dseqr::load_tx2gene(species, release)
+    tx2gene <- dseqr.data::load_tx2gene(species, release)
 
     # unlist entrezids
     fdata <- data.table::data.table(tx2gene)
@@ -396,7 +396,7 @@ setup_fdata <- function(species = "Homo sapiens", release = "94") {
 #' file.copy(example, qdir, recursive = TRUE)
 #' quants <- import_quants(data_dir)
 import_quants <- function(data_dir, species = "Homo sapiens", release = "94") {
-    tx2gene <- dseqr::load_tx2gene(species, release)
+    tx2gene <- dseqr.data::load_tx2gene(species, release)
 
     # don't ignoreTxVersion if dots in tx2gene
     ignore <- TRUE
