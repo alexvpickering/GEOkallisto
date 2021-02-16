@@ -68,7 +68,7 @@ load_seq <- function(data_dir, species = "Homo sapiens", release = "94",
     q <- import_quants(data_dir, species = species, release = release)
 
     # construct eset
-    annot <- dseqr::get_ensdb_package(species, release)
+    annot <- dseqr.data::get_ensdb_package(species, release)
     fdata <- setup_fdata(species, release)
     eset <- construct_eset(q$quants, fdata, annot, q$txi.deseq)
 
@@ -312,7 +312,7 @@ setup_fdata <- function(species = "Homo sapiens", release = "94") {
     # add homologene
     homologene <- readRDS(system.file("extdata",
         "homologene.rds",
-        package = "dseqr"
+        package = "dseqr.data"
     ))
 
     fdata <- merge(unique(fdata), homologene,
@@ -328,7 +328,7 @@ setup_fdata <- function(species = "Homo sapiens", release = "94") {
     } else {
         hs <- readRDS(system.file("extdata",
             "hs.rds",
-            package = "dseqr"
+            package = "dseqr.data"
         ))
 
         # where no homology, use original entrez id (useful if human platform):

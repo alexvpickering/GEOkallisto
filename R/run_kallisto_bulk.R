@@ -21,6 +21,7 @@
 #'   single-end reads). Default (\code{NULL}) uses 200.
 #' @param fl.sd Estimated standard deviation of fragment length
 #'   (only relevant for single-end reads). Default (\code{NULL}) uses 20.
+#' @param ncores Number of cores to run quantification with. Default is 1.
 #' @param updateProgress Used by dseqr app to provide visual update of
 #'   progress.
 #'
@@ -30,7 +31,7 @@
 #'
 run_kallisto_bulk <- function(indices_dir, data_dir, quant_meta = NULL,
     paired = NULL, species = "homo_sapiens",
-    release = "94", fl.mean = NULL, fl.sd = NULL,
+    release = "94", fl.mean = NULL, fl.sd = NULL, ncores = 1,
     updateProgress = NULL) {
     data_dir <- path.expand(data_dir)
 
@@ -132,7 +133,7 @@ run_kallisto_bulk <- function(indices_dir, data_dir, quant_meta = NULL,
                 "quant",
                 "-i", index_path,
                 "-o", shQuote(out_dir),
-                "-t", 6,
+                "-t", ncores,
                 flags,
                 fastq_path
             )
