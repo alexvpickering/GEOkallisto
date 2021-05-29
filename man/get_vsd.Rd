@@ -4,33 +4,14 @@
 \alias{get_vsd}
 \title{Get variance stabilized data for exploratory data analysis}
 \usage{
-get_vsd(eset, rlog_cutoff = 50)
+get_vsd(eset)
 }
 \arguments{
-\item{eset}{ExpressionSet loaded with \link{load_seq}.
-Requires group column in \code{pData(eset)} specifying sample groupings.}
-
-\item{rlog_cutoff}{Sample number above which will use
-\code{\link[DESeq2]{vst}} instead of \code{\link[DESeq2]{rlog}}.
-Default is 50.}
+\item{eset}{ExpressionSet loaded with \link{load_seq}.}
 }
 \value{
-\code{DESeqTransform} with variance stabilized expression data.
+\code{matrix} with variance stabilized expression data.
 }
 \description{
 Get variance stabilized data for exploratory data analysis
-}
-\examples{
-
-# generate example
-y <- matrix(rnbinom(10000, mu = 5, size = 2), ncol = 4)
-row.names(y) <- paste0("gene", 1:2500)
-quants <- edgeR::DGEList(counts = y)
-
-fdata <- data.table::data.table(gene_name = row.names(y), key = "gene_name")
-annot <- dseqr::get_ensdb_package("Homo sapiens", "94")
-
-eset <- construct_eset(quants, fdata, annot)
-eset$group <- factor(c("t", "t", "c", "c"))
-vsd <- get_vsd(eset)
 }

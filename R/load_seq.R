@@ -22,10 +22,6 @@
 #'   \item \code{exprs} Length scaled counts generated from abundances for use
 #'     in \code{\link[limma]{voom}} (see
 #'     \code{vignette("tximport", package = "tximport")}).
-#'   \item \code{abundance, counts, length} accessed e.g. by
-#'     \code{assayDataElement(eset, 'length')}.
-#'   Imported for exploratory data analysis with DESeq2 variance stabilization
-#'     transforms.
 #'   \item \code{phenoData} added columns:
 #'     \itemize{
 #'       \item \code{lib.size} library size from
@@ -140,52 +136,19 @@ load_archs4_seq <- function(archs4_file, gsm_names, species = "Homo sapiens",
 #' Get variance stabilized data for exploratory data analysis
 #'
 #' @param eset ExpressionSet loaded with \link{load_seq}.
-#'   Requires group column in \code{pData(eset)} specifying sample groupings.
-#' @param rlog_cutoff Sample number above which will use
-#'   \code{\link[DESeq2]{vst}} instead of \code{\link[DESeq2]{rlog}}.
-#'   Default is 50.
 #'
-#' @return \code{DESeqTransform} with variance stabilized expression data.
+#' @return \code{matrix} with variance stabilized expression data.
 #' @export
-#' @examples
 #'
-#' # generate example
-#' y <- matrix(rnbinom(10000, mu = 5, size = 2), ncol = 4)
-#' row.names(y) <- paste0("gene", 1:2500)
-#' quants <- edgeR::DGEList(counts = y)
-#'
-#' fdata <- data.table::data.table(gene_name = row.names(y), key = "gene_name")
-#' annot <- dseqr::get_ensdb_package("Homo sapiens", "94")
-#'
-#' eset <- construct_eset(quants, fdata, annot)
-#' eset$group <- factor(c("t", "t", "c", "c"))
-#' vsd <- get_vsd(eset)
-get_vsd <- function(eset, rlog_cutoff = 50) {
-    trans_fun <- if (ncol(eset) > rlog_cutoff) DESeq2::vst else DESeq2::rlog
-    els <- Biobase::assayDataElementNames(eset)
+get_vsd <- function(eset) {
     pdata <- Biobase::pData(eset)
+    lib.size <- pdata$lib.size * pdata$norm.factors
 
-    if (all(c("abundance", "counts", "length") %in% els)) {
-        txi.deseq <- list(
-            countsFromAbundance = "no",
-            abundance = Biobase::assayDataElement(eset, "abundance"),
-            counts = Biobase::assayDataElement(eset, "counts"),
-            length = Biobase::assayDataElement(eset, "length")
-        )
-
-        dds <- DESeq2::DESeqDataSetFromTximport(txi.deseq,
-            pdata,
-            design = ~group
-        )
-    } else {
-        # this is e.g. for eset from load_archs4_seq
-        dds <- DESeq2::DESeqDataSetFromMatrix(Biobase::exprs(eset),
-            pdata,
-            design = ~group
-        )
-    }
-    dds <- DESeq2::estimateSizeFactors(dds)
-    vsd <- trans_fun(dds, blind = FALSE)
+    # GK Smyth advice for variance stabilization for plotting
+    # https://support.bioconductor.org/p/114133/
+    vsd <- edgeR::cpm(Biobase::exprs(eset),
+                      lib.size = lib.size,
+                      log = TRUE, prior.count = 5)
 
     return(vsd)
 }

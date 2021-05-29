@@ -17,14 +17,6 @@ filtered \code{eset}
 Uses \link[edgeR]{filterByExpr} to filter based on 'counts' assay or 'exprs'
 assay if 'counts' isn't available (for ARCHS4 data).
 }
-\examples{
-
-# example ExpressionSet
-dds <- DESeq2::makeExampleDESeqDataSet()
-eset <- Biobase::ExpressionSet(DESeq2::counts(dds))
-eset$group <- dds$condition
-eset <- filter_genes(eset)
-}
 \seealso{
 \link[edgeR]{filterByExpr}
 }

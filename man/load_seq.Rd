@@ -38,10 +38,6 @@ already exists.}
   \item \code{exprs} Length scaled counts generated from abundances for use
     in \code{\link[limma]{voom}} (see
     \code{vignette("tximport", package = "tximport")}).
-  \item \code{abundance, counts, length} accessed e.g. by
-    \code{assayDataElement(eset, 'length')}.
-  Imported for exploratory data analysis with DESeq2 variance stabilization
-    transforms.
   \item \code{phenoData} added columns:
     \itemize{
       \item \code{lib.size} library size from
