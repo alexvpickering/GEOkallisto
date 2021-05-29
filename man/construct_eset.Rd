@@ -4,7 +4,7 @@
 \alias{construct_eset}
 \title{Construct expression set}
 \usage{
-construct_eset(quants, fdata, annot, txi.deseq = NULL)
+construct_eset(quants, fdata, annot)
 }
 \arguments{
 \item{quants}{\code{DGEList} with RNA-seq counts.}
@@ -14,10 +14,6 @@ construct_eset(quants, fdata, annot, txi.deseq = NULL)
 \item{annot}{Character vector with ensembldb package name. e.g.
 \code{'EnsDb.Hsapiens.v94'}. Returned from
 \code{\link[dseqr]{get_ensdb_package}}.}
-
-\item{txi.deseq}{Optional \code{DGElist} returned by \code{import_quants}. If
-specified, assays 'counts', 'abundance', and 'length' will be present in
-the returned \code{ExpressionSet}.}
 }
 \value{
 \code{ExpressionSet} with \code{quants$counts} stored in the 'exprs'

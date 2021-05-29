@@ -13,6 +13,7 @@ run_kallisto_bulk(
   release = "94",
   fl.mean = NULL,
   fl.sd = NULL,
+  ncores = 1,
   updateProgress = NULL
 )
 }
@@ -45,6 +46,8 @@ single-end reads). Default (\code{NULL}) uses 200.}
 
 \item{fl.sd}{Estimated standard deviation of fragment length
 (only relevant for single-end reads). Default (\code{NULL}) uses 20.}
+
+\item{ncores}{Number of cores to run quantification with. Default is 1.}
 
 \item{updateProgress}{Used by dseqr app to provide visual update of
 progress.}

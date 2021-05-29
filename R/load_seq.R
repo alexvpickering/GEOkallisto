@@ -64,13 +64,13 @@ load_seq <- function(data_dir, species = "Homo sapiens", release = "94",
         return(readRDS(eset_path))
     }
 
-    # import quants and filter low counts
-    q <- import_quants(data_dir, species = species, release = release)
+    # import quants
+    quants <- import_quants(data_dir, species = species, release = release)
 
     # construct eset
     annot <- dseqr.data::get_ensdb_package(species, release)
     fdata <- setup_fdata(species, release)
-    eset <- construct_eset(q$quants, fdata, annot, q$txi.deseq)
+    eset <- construct_eset(quants, fdata, annot)
 
     # save eset and return
     if (save_eset) saveRDS(eset, eset_path)
@@ -198,9 +198,6 @@ get_vsd <- function(eset, rlog_cutoff = 50) {
 #' @param annot Character vector with ensembldb package name. e.g.
 #'   \code{'EnsDb.Hsapiens.v94'}. Returned from
 #'   \code{\link[dseqr]{get_ensdb_package}}.
-#' @param txi.deseq Optional \code{DGElist} returned by \code{import_quants}. If
-#'   specified, assays 'counts', 'abundance', and 'length' will be present in
-#'   the returned \code{ExpressionSet}.
 #'
 #' @return \code{ExpressionSet} with \code{quants$counts} stored in the 'exprs'
 #'  assay, \code{quants$samples} stored in the sample metadata, and \code{fdata}
@@ -217,28 +214,16 @@ get_vsd <- function(eset, rlog_cutoff = 50) {
 #' annot <- dseqr::get_ensdb_package("Homo sapiens", "94")
 #'
 #' eset <- construct_eset(quants, fdata, annot)
-construct_eset <- function(quants, fdata, annot, txi.deseq = NULL) {
+construct_eset <- function(quants, fdata, annot) {
     # remove duplicate rows of counts
     rn <- row.names(quants$counts)
-
-    txi.deseq <- txi.deseq[c("abundance", "counts", "length")]
-    for (name in names(txi.deseq)) {
-        colnames(txi.deseq[[name]]) <-
-            paste(colnames(txi.deseq[[name]]), name, sep = "_")
-    }
 
     # workaround: R crashed from unique(mat) with GSE93624
     counts <- data.frame(quants$counts, rn,
         stringsAsFactors = FALSE, check.names = FALSE
     )
 
-    mat <- data.table::data.table(counts,
-        txi.deseq$abundance,
-        txi.deseq$counts,
-        txi.deseq$length,
-        key = "rn"
-    )
-
+    mat <- data.table::data.table(counts, key = "rn")
     mat <- mat[!duplicated(counts), ]
 
     # merge exprs and fdata
@@ -253,25 +238,9 @@ construct_eset <- function(quants, fdata, annot, txi.deseq = NULL) {
     pdata <- quants$samples
     pdata$group <- NULL
 
-    # create environment with counts for limma and txi.deseq values for plots
+    # create environment with counts for limma
     e <- new.env()
     e$exprs <- as.matrix(dt[, row.names(pdata), drop = FALSE])
-
-    if (!is.null(txi.deseq)) {
-        e$abundance <- as.matrix(
-            dt[, paste0(row.names(pdata), "_abundance"), drop = FALSE]
-        )
-        e$counts <- as.matrix(
-            dt[, paste0(row.names(pdata), "_counts"), drop = FALSE]
-        )
-        e$length <- as.matrix(
-            dt[, paste0(row.names(pdata), "_length"), drop = FALSE]
-        )
-
-        colnames(e$abundance) <- gsub("_abundance$", "", colnames(e$abundance))
-        colnames(e$counts) <- gsub("_counts$", "", colnames(e$counts))
-        colnames(e$length) <- gsub("_length$", "", colnames(e$length))
-    }
 
     # seperate fdata and exprs and transfer to eset
     eset <- Biobase::ExpressionSet(
@@ -422,13 +391,5 @@ import_quants <- function(data_dir, species = "Homo sapiens", release = "94") {
     quants <- edgeR::DGEList(txi.limma$counts)
     quants <- edgeR::calcNormFactors(quants)
 
-    # import DESeq2 for exploratory analysis (plots)
-    txi.deseq <- tximport::tximport(
-        quants_paths,
-        tx2gene = tx2gene, type = "kallisto",
-        ignoreTxVersion = ignore, countsFromAbundance = "no"
-    )
-
-
-    return(list(quants = quants, txi.deseq = txi.deseq))
+    return(quants)
 }
