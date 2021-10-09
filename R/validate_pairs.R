@@ -74,9 +74,12 @@ get_fastq_id1s <- function(fastq_paths) {
 
     # get first line with @ symbol (sequence identifier)
     fastq_id1s <- vapply(fastq_paths, function(f) {
-        incon <- gzfile(f)
+        incon <- gzfile(f, 'r')
         while (TRUE) {
             line <- readLines(incon, n = 1)
+            if ( length(line) == 0 ) {
+                return('')
+            }
             if (grepl("^@", line)) {
                 break
             }
