@@ -170,15 +170,11 @@ validate_reps <- function(pairs, rows, reps) {
     if (length(rows) < 2) {
         msg <- "Select at least two rows to mark as replicates."
     } else if (!all(is.na(reps[rows]))) {
-        msg <- paste0(
-            "Selected row(s) already belong to a replicate.",
-            " Click 'Reset' if you need to start over."
-        )
+        msg <- "Selected row(s) already belong to a replicate."
     } else if (!all(is.na(pairs[rows]))) {
         msg <- paste0(
             "Replicates must be specified first for paired samples ",
-            "that include replicates. Click 'Reset' if you need to ",
-            "start over."
+            "that include replicates."
         )
     } else {
         msg <- NULL
