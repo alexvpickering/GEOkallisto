@@ -1,11 +1,11 @@
-#' Get unique pairs from bulk fastq files
+#' Get pairs from bulk fastq files
 #'
 #' @inheritParams detect_paired
 #'
-#' @return Character vector of unique pairs.
+#' @return Character vector of pairs.
 #' @export
 #'
-get_unique_pairs <- function(fastq_id1s) {
+get_fastq_pairs <- function(fastq_id1s) {
     # older illumina sequence identifiers have 1 part
     # newer illumina sequence identifiers have 2 space-seperated parts
     id_parts <- strsplit(fastq_id1s, " ")
@@ -53,7 +53,9 @@ get_unique_pairs <- function(fastq_id1s) {
 #' detect_paired(fastq_id1s)
 detect_paired <- function(fastq_id1s) {
 
-    uniq.pairs <- get_unique_pairs(fastq_id1s)
+    pairs <- get_fastq_pairs(fastq_id1s)
+    uniq.pairs <- unique(pairs)
+
     if (is.null(uniq.pairs)) stop(
         "fastq.gz files don't appear to be from older/newer Illumina",
         " software. Please contact package author."
