@@ -31,9 +31,7 @@ get_fastq_pairs <- function(fastq_id1s) {
         pairs <- gsub("^.+?/([12]$)", "\\1", pairs)
     }
 
-    # paired experiments will have '1' and '2'
-    uniq.pairs <- unique(pairs)
-    return(uniq.pairs)
+    return(pairs)
 }
 
 #' Detect if experiment is pair-ended.
