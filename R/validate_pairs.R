@@ -1,3 +1,41 @@
+#' Get unique pairs from bulk fastq files
+#'
+#' @inheritParams detect_paired
+#'
+#' @return Character vector of unique pairs.
+#' @export
+#'
+get_unique_pairs <- function(fastq_id1s) {
+    # older illumina sequence identifiers have 1 part
+    # newer illumina sequence identifiers have 2 space-seperated parts
+    id_parts <- strsplit(fastq_id1s, " ")
+    FUN.VALUE <- seq_along(id_parts)
+    older <- all(sapply(id_parts, length) == 1)
+    newer <- all(sapply(id_parts, length) == 2)
+
+    if (older) {
+        # pair is 1 or 2 at end of sequence id after /
+        pairs <- gsub("^.+?/([12])$", "\\1", fastq_id1s)
+    } else if (newer) {
+        # pair is 1 or 2 followed by : followed by N or Y at beginning of
+        # second part
+        id_parts2 <- unlist(lapply(id_parts, `[`, 2))
+        pairs <- gsub("^([12]):[YN]:.+$", "\\1", id_parts2)
+    } else {
+        return(NULL)
+    }
+
+    # SRA also accepts /1 and /2 at end of read name
+    is_sra <- any(grepl("^@SRR\\d+", fastq_id1s))
+    if (is_sra) {
+        pairs <- gsub("^.+?/([12]$)", "\\1", pairs)
+    }
+
+    # paired experiments will have '1' and '2'
+    uniq.pairs <- unique(pairs)
+    return(uniq.pairs)
+}
+
 #' Detect if experiment is pair-ended.
 #'
 #' @param fastq_id1s Character vector of first sequence identifiers from
@@ -15,36 +53,12 @@
 #' detect_paired(fastq_id1s)
 detect_paired <- function(fastq_id1s) {
 
-    # older illumina sequence identifiers have 1 part
-    # newer illumina sequence identifiers have 2 space-seperated parts
-    id_parts <- strsplit(fastq_id1s, " ")
-    FUN.VALUE <- seq_along(id_parts)
-    older <- all(sapply(id_parts, length) == 1)
-    newer <- all(sapply(id_parts, length) == 2)
+    uniq.pairs <- get_unique_pairs(fastq_id1s)
+    if (is.null(uniq.pairs)) stop(
+        "fastq.gz files don't appear to be from older/newer Illumina",
+        " software. Please contact package author."
+    )
 
-    if (older) {
-        # pair is 1 or 2 at end of sequence id after /
-        pairs <- gsub("^.+?/([12])$", "\\1", fastq_id1s)
-    } else if (newer) {
-        # pair is 1 or 2 followed by : followed by N or Y at beginning of
-        # second part
-        id_parts2 <- unlist(lapply(id_parts, `[`, 2))
-        pairs <- gsub("^([12]):[YN]:.+$", "\\1", id_parts2)
-    } else {
-        stop(
-            "fastq.gz files don't appear to be from older/newer Illumina",
-            " software. Please contact package author."
-        )
-    }
-
-    # SRA also accepts /1 and /2 at end of read name
-    is_sra <- any(grepl("^@SRR\\d+", fastq_id1s))
-    if (is_sra) {
-        pairs <- gsub("^.+?/([12]$)", "\\1", pairs)
-    }
-
-    # paired experiments will have '1' and '2'
-    uniq.pairs <- unique(pairs)
     paired <- setequal(c("1", "2"), uniq.pairs)
 
     # unpaired will have only '1'
