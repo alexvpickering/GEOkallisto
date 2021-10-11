@@ -142,10 +142,8 @@ validate_pairs <- function(pairs, rows, reps) {
             "replicate group and one additional sample."
         )
     } else if (!all(is.na(pairs[rows]))) {
-        msg <- paste0(
-            "Selected row(s) already belong to a pair.",
-            " Click 'Reset' if you need to start over."
-        )
+        msg <- "Selected row(s) already belong to a pair."
+
     } else {
         msg <- NULL
     }
