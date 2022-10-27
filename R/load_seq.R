@@ -2,7 +2,7 @@
 
 #' Load bulk RNA-Seq data into an ExpressionSet.
 #'
-#' @param data_dir Directory with raw and quantified RNA-Seq files.
+#' @param data_dir Directory specified as \code{out_dir} argument to \code{\link{run_kallisto_bulk}}.
 #' @param species Character vector indicating species. Genus and species should
 #'   be space separated, not underscore. Default is \code{Homo sapiens}.
 #' @param release EnsemblDB release. Should be same as used in

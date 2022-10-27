@@ -6,6 +6,7 @@
 #' @param indices_dir Directory with kallisto indices. See
 #'   \code{\link{build_kallisto_index}}.
 #' @param data_dir Directory with raw fastq.gz RNA-Seq files.
+#' @param out_dir Directory to save results to (Default is \code{data_dir}).
 #' @param quant_meta Previous result of \code{\link{get_quant_meta}}
 #'   (for fastqs downloaded by `GEOfastq`) or \code{\link{select_pairs}}
 #'   (for non-public fastqs). Must contain column \code{'File Name'} and
@@ -32,7 +33,7 @@
 run_kallisto_bulk <- function(indices_dir, data_dir, quant_meta = NULL,
     paired = NULL, species = "homo_sapiens",
     release = "94", fl.mean = NULL, fl.sd = NULL, ncores = 1,
-    updateProgress = NULL) {
+    updateProgress = NULL, out_dir = data_dir) {
     data_dir <- path.expand(data_dir)
 
     # default updateProgress and number of steps
@@ -50,10 +51,10 @@ run_kallisto_bulk <- function(indices_dir, data_dir, quant_meta = NULL,
 
     # save quants here
     quants_dir <- file.path(
-        data_dir, paste("kallisto", kallisto_version, "quants", sep = "_")
+        out_dir, paste("kallisto", kallisto_version, "quants", sep = "_")
     )
 
-    dir.create(quants_dir, showWarnings = FALSE)
+    dir.create(quants_dir)
 
     # if not supplied from app, then from select_pairs quant_meta
     if (is.null(paired)) paired <- sum(!is.na(quant_meta$Pair)) > 0
