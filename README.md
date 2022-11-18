@@ -2,7 +2,7 @@
 
 `rkal` can be installed as follows:
 
-```{r, eval = FALSE}
+```R
 remotes::install.packages('alexvpickering/rkal')
 ```
 
@@ -22,7 +22,7 @@ system('kallisto')
 Prior to pseudoalignment, an index of the transcriptome must first be built:
 
 
-```{r}
+```R
 #This will build the human Ensembl94 index for kallisto in the working directory
 #this only needs to be run once
 indices_dir <- getwd()
@@ -33,7 +33,7 @@ build_kallisto_index(indices_dir = indices_dir,
 Next, we download an example fastq file with [`GEOfastq`](https://github.com/alexvpickering/GEOfastq).
 Skip this step if you have your own fastq files:
 
-```{r}
+```R
 library(GEOfastq)
 data_dir <- tempdir()
 
@@ -45,7 +45,7 @@ res <- get_fastqs(srp_meta, data_dir)
 Next we collect fastq file metadata needed to run pseudoalignement (are fastq 
 files paired or single-end? Are there any replicates aka samples split across multiple files?):
 
-```{r}
+```R
 # we can get the necessary metadata data.frame for fastqs from GEOfastq
 quant_meta <- get_quant_meta(srp_meta, data_dir)
 
@@ -58,13 +58,13 @@ quant_meta <- get_quant_meta(srp_meta, data_dir)
 
 We are now ready to run pseudoalignment:
 
-```{r}
+```R
 # can exclude quant_meta for personal fastqs (will invoke GUI)
 res <- run_kallisto_bulk(indices_dir, data_dir, quant_meta)
 ```
 If you plan to use `crossmeta` or `dseqr`, you can easily generate a suitably
 annotated `ExpressionSet`:
 
-```{r}
+```R
 eset <- load_seq(data_dir)
 ```
