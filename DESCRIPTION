@@ -30,12 +30,6 @@ Imports:
     data.table,
     rhdf5,
     dseqr.data
-biocViews:
-    RNASeq,
-    DataImport,
-    DifferentialExpression,
-    Preprocessing,
-    Transcriptomics
 Depends: 
     R (>= 4.0)
 Suggests: 

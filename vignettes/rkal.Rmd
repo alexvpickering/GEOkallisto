@@ -21,12 +21,10 @@ library(rkal)
 
 # Installation
 
-`rkal` can be installed from Bioconductor as follows:
+`rkal` can be installed as follows:
 
 ```{r, eval = FALSE}
-if(!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("rkal")
+remotes::install.packages('alexvpickering/rkal')
 ```
 
 # Overview of rkal
