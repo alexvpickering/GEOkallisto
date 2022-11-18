@@ -1,4 +1,4 @@
-# Installation
+## rkal installation
 
 `rkal` can be installed as follows:
 
@@ -6,7 +6,7 @@
 remotes::install.packages('alexvpickering/rkal')
 ```
 
-# rkal
+## kallisto installation
 
 `rkal` requires that `kallisto` is installed and available on the command
 line. Please see [here](https://pachterlab.github.io/kallisto/download.html)
@@ -17,7 +17,7 @@ run from R:
 system('kallisto')
 ```
 
-# Getting Started using rkal
+## Getting started using rkal
 
 Prior to pseudoalignment, an index of the transcriptome must first be built:
 
